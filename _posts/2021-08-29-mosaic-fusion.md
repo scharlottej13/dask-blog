@@ -23,12 +23,6 @@ Volker works on [spatial metabolomics](https://www.ebi.ac.uk/training/online/cou
 
 In microscopy, we often have very large samples that need to be imaged in high resolution. One way to achieve this is to take many smaller images of each part, and then fuse them together into a single large image.
 
-### Software alternatives
-
-Originally, the researchers intended to use the [BigStitcher plugin](https://imagej.net/plugins/bigstitcher/) in [Fiji](https://fiji.sc/). Big Stitcher is an excellent plugin, designed for exactly this type of mosaic image fusion workflow.
-
-However, the researchers discovered that in practice for large numbers of tiles (several hundred) there was an unfortunate scaling behaviour, estimating roughly `O(n^2)` complexity or worse. (If you want to know more about what that means and why it's a bad thing, see this article on [Learning Big O Notation With O(n) Complexity](https://dzone.com/articles/learning-big-o-notation-with-on-complexity)). This is what prompted them to explore alternative options, and finally settle on using [Dask](https://dask.org/) to manage the image fusion, and the [napari image viewer](https://napari.org/) to display the results.
-
 ## The solution
 
 Typically whenever we want to join dask arrays, we use [Stack, Concatenate, and Block](https://docs.dask.org/en/latest/array-stack.html). However, these are not good tools for mosaic image fusion, because:
