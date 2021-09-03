@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Mosaic Image Fusion
-author: Volker Hilsenstein and Genevieve Buckley
+author: Volker Hilsenstein, Marvin Albert, and Genevieve Buckley
 tags: [life science]
 theme: twitter
 ---
@@ -11,7 +11,9 @@ theme: twitter
 
 This blogpost shows a case study, where a researcher uses Dask for mosaic image fusion - stitching multiple smaller images together seamlessly into a very large field of view. Full code examples are available on GitHub from the `DaskFusion` repository: https://github.com/VolkerH/DaskFusion
 
-This work was done by Volker Hilsenstein, a scientific software developer at EMBL in Theodore Alexandrov's lab. Special thanks go to Marvin Albert for valuable discussions and advice. Genevieve Buckley wrote the blogpost.
+This work was done by Volker Hilsenstein, in conjunction with Marvin Albert. Genevieve Buckley wrote the blogpost.
+
+Volker Hilsenstein is a scientific software developer at EMBL in Theodore Alexandrov's lab.
 
 ## The problem
 
