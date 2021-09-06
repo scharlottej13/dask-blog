@@ -489,8 +489,9 @@ list(data.value_counts()[data.value_counts() == 1].keys().get_level_values(0))
 
 
 
-<img src="https://imgs.xkcd.com/comics/standards_2x.png" alt="XKCD comic 927: Competing Standards"> 
+<img src="https://imgs.xkcd.com/comics/standards_2x.png" alt="XKCD comic 927: Standards"> 
 
+XKCD comic "Standards" https://xkcd.com/927/
 
 ### Preferred Cloud?
 
