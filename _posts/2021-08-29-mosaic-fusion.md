@@ -9,31 +9,46 @@ theme: twitter
 
 ## Executive Summary
 
-This blogpost shows a case study, where a researcher uses Dask for mosaic image fusion - stitching multiple smaller images together seamlessly into a very large field of view. Full code examples are available on GitHub from the `DaskFusion` repository: https://github.com/VolkerH/DaskFusion
+This blogpost shows a case study, where a researcher uses Dask for mosaic image fusion, i.e. merging  stitching multiple smaller images taken at known locations together into a very large field of view. Full code examples are available on GitHub from the `DaskFusion` repository: https://github.com/VolkerH/DaskFusion
 
 This work was done by Volker Hilsenstein, in conjunction with Marvin Albert. Genevieve Buckley wrote the blogpost.
 
-Volker Hilsenstein is a scientific software developer at EMBL in Theodore Alexandrov's lab.
+Volker Hilsenstein is a scientific software developer at [EMBL in Theodore Alexandrov's lab](https://www.embl.org/groups/alexandrov/) with a focus on spatial metabolomics an bio-image analysis. 
 
 ## The problem
 
-Volker works on [spatial metabolomics](https://www.ebi.ac.uk/training/online/courses/metabolomics-introduction/what-is/) and bio-image analysis.
+### Image mosaicing in microscopy
 
-### What is mosaic image fusion?
+In optical microscopy, a single field of view captured with a 20x objective typically
+has a diagonal on the order of a few 100 um (exact dimensions depend on other
+parts of the optical system, including the size of the camera chip). A typical 
+sample slide has a size of 25mm * 70mm. 
+So when imaging a whole slide, one has to acquire hundreds of images, typically
+with some overlap between individual tiles.  With increasing magnifcation,
+the required number of images increases accordingly. 
 
-In microscopy, we often have very large samples that need to be imaged in high resolution. One way to achieve this is to take many smaller images of each part, and then fuse them together into a single large image.
+To obtain an overview one has to fuse this large number of individual
+image tiles into a large mosaic image. Herer, we assume that the inforamtion requiring for 
+positioning and alignment of the individual image tiles is already available. In our case,
+this information is available based on the the metadata recorded by the microscope, however this
+information could also be from  previous registration step that matches image features 
+in the overlapping areas.
+ 
 
 ## The solution
 
+
+The array that can hold resulting mosaic image will often have a size that is too large 
+to fit in RAM, therefore we will use dask arrays and the `map_block` function to enable 
+out-of-core processing. As an added benefit, we will get parallel processing for free
+which speeds up the fusion process.
+
 Typically whenever we want to join dask arrays, we use [Stack, Concatenate, and Block](https://docs.dask.org/en/latest/array-stack.html). However, these are not good tools for mosaic image fusion, because:
 
-1. There needs to be some overlap at the edges of each image tile, and
-2. While the position of the image tile is known based on the sample stage motor coordinates, there is a small amount of uncertainty in this measurement.
+1. the image tiles will be be overlapping,
+2. in the general case, individual image tiles may not be positioned on an exact grid and they can also have small rotations.
 
 
-Marvin's lightning talk on multi-view image fusion is up online now: https://www.youtube.com/watch?v=YIblUvonMvo&list=PLJ0vO2F_f6OBAY6hjRHM_mIQ9yh32mWr0&index=10
-
-[MVRegFus](https://github.com/m-albert/MVRegFus)
 
 
 `block_info` dictionary and creating some
@@ -61,6 +76,19 @@ Code relatiing to this mosaic image fusion project can be found in the `DaskFusi
 
 There is a self-contained example available in [this notebook](https://github.com/VolkerH/DaskFusion/blob/main/Load_Mosaic.ipynb), which downloads reduced-size example data to demonstrate the process.
 
+
+
+
 ## What's next?
 
-Volker says, "If anyone is keen this could be amended for 3D and use Big Stitcher Project files as input". If that's something you might be interested in, get in touch!
+Currently, the DaskFusion code is a proof of concept for single-channel 2D images and simple maximum projection for blending the tiles in overlapping areas.
+However, the same principle can be used for fusing multi-channel image volumes,
+such as from Light-Sheet data if the tile chunk intersection calculation is extended to higher-dimensional 
+arrays.
+Such even larger datasets will benefit even more from leveraging dask,
+as the processing can be distributed across multiple nodes of a HPC cluster using dask jobqueue.
+
+### Also see
+Marvin's lightning talk on multi-view image fusion is up online now: https://www.youtube.com/watch?v=YIblUvonMvo&list=PLJ0vO2F_f6OBAY6hjRHM_mIQ9yh32mWr0&index=10
+
+[MVRegFus](https://github.com/m-albert/MVRegFus)
