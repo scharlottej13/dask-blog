@@ -1,12 +1,3 @@
----
-layout: post
-title: 2021 Dask User Survey
-author: Genevieve Buckley
-tags: [User Survey]
-theme: twitter
----
-{% include JB/setup %}
-
 # 2021 Dask User Survey Results
 
 This post presents the results of the 2021 Dask User Survey, which ran earlier this year.
@@ -41,7 +32,7 @@ Our community wants:
 
 - More documentation and examples
 - More intermediate level documentation
-- To improve the resiliancy of Dask (i.e. do computatoins complete?)
+- To improve the resiliency of Dask (i.e. do computations complete?)
 
 Users also value these features:
 
@@ -97,7 +88,7 @@ df2021 = (
       .replace({"How often do you use Dask?": "I use Dask all the time, even when I sleep"}, "Every day")
 )
 
-common = df2019.columns & df2020.columns & df2021.columns
+common = df2019.columns.intersection(df2020.columns).intersection(df2021.columns)
 added = df2021.columns.difference(df2020.columns)
 dropped = df2020.columns.difference(df2021.columns)
 
@@ -105,10 +96,6 @@ df = pd.concat([df2019, df2020, df2021])
 df['Year'] = df.Timestamp.dt.year
 df = df.set_index(['Year', 'Timestamp']).sort_index()
 ```
-
-    /tmp/ipykernel_85466/1303943147.py:28: FutureWarning: Index.__and__ operating as a set operation is deprecated, in the future this will be a logical operation matching Series.__and__.  Use index.intersection(other) instead
-      common = df2019.columns & df2020.columns & df2021.columns
-
 
 ## Who are Dask users? <a class="anchor" id="who-are-dask-users"></a>
 
@@ -123,7 +110,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_7_0.png)
+![png](/images/2021_survey/2021_survey_7_0.png)
     
 
 
@@ -137,13 +124,11 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_8_0.png)
+![png](/images/2021_survey/2021_survey_8_0.png)
     
 
 
 Just over half of respondants use Dask with other people (their team or organisation), and the other half use Dask on their own. 
-
-In the last year, there has been an increase in the number of people who say that many people throughout their institution use Dask (32 people said this in 2021, compared to 19 in 2020).
 
 
 ```python
@@ -159,7 +144,23 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_10_0.png)
+![png](/images/2021_survey/2021_survey_10_0.png)
+    
+
+
+In the last year, there has been an increase in the number of people who say that many people throughout their institution use Dask (32 people said this in 2021, compared to 19 in 2020).
+
+
+```python
+q = 'Do you use Dask as part of a larger group?'
+ans = 'Beyond my group, many people throughout my institution use Dask'
+ax = sns.countplot(x=q, hue="Year", data=df.reset_index(), order=[ans], palette='Set1');
+ax.set(title="How widespread Dask use within organisations has changed over time");
+```
+
+
+    
+![png](/images/2021_survey/2021_survey_12_0.png)
     
 
 
@@ -184,7 +185,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_12_0.png)
+![png](/images/2021_survey/2021_survey_14_0.png)
     
 
 
@@ -200,7 +201,7 @@ sns.countplot(y=q, data=df2021[q].dropna().explode().to_frame()).set_ylabel('Sca
 
 
     
-![png](2021_survey_files/2021_survey_14_0.png)
+![png](/images/2021_survey/2021_survey_16_0.png)
     
 
 
@@ -228,7 +229,7 @@ sns.countplot(y=q, data=data, order=labels).set_ylabel('');
 
 
     
-![png](2021_survey_files/2021_survey_18_0.png)
+![png](/images/2021_survey/2021_survey_20_0.png)
     
 
 
@@ -252,7 +253,7 @@ sns.countplot(y="Dask APIs", data=apis);
 
 
     
-![png](2021_survey_files/2021_survey_20_0.png)
+![png](/images/2021_survey/2021_survey_22_0.png)
     
 
 
@@ -273,7 +274,7 @@ sns.countplot(y=q, data=data.explode().to_frame(), order=order).set_ylabel('');
 
 
     
-![png](2021_survey_files/2021_survey_22_0.png)
+![png](/images/2021_survey/2021_survey_24_0.png)
     
 
 
@@ -292,7 +293,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_24_0.png)
+![png](/images/2021_survey/2021_survey_26_0.png)
     
 
 
@@ -333,7 +334,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_27_0.png)
+![png](/images/2021_survey/2021_survey_29_0.png)
     
 
 
@@ -355,7 +356,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_29_0.png)
+![png](/images/2021_survey/2021_survey_31_0.png)
     
 
 
@@ -372,7 +373,7 @@ ax.set(ylabel="", title="Do you need multiple worker/machine types on a cluster?
 
 
     
-![png](2021_survey_files/2021_survey_31_0.png)
+![png](/images/2021_survey/2021_survey_33_0.png)
     
 
 
@@ -391,7 +392,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_33_0.png)
+![png](/images/2021_survey/2021_survey_35_0.png)
     
 
 
@@ -410,7 +411,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_35_0.png)
+![png](/images/2021_survey/2021_survey_37_0.png)
     
 
 
@@ -429,7 +430,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_37_0.png)
+![png](/images/2021_survey/2021_survey_39_0.png)
     
 
 
@@ -504,7 +505,7 @@ order = [
     "Amazon Web Services (AWS)",
     "Google Cloud Platform (GCP)",
     "Microsoft Azure",
-    "Digital Ocean",    
+    "Digital Ocean",
 ]
 ax = sns.countplot(y=q, data=df2021[q].dropna().str.split(", ").explode().to_frame(), order=order);
 ax.set(ylabel="", title=q);
@@ -512,7 +513,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_42_0.png)
+![png](/images/2021_survey/2021_survey_44_0.png)
     
 
 
@@ -544,7 +545,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_44_0.png)
+![png](/images/2021_survey/2021_survey_46_0.png)
     
 
 
@@ -568,7 +569,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_46_0.png)
+![png](/images/2021_survey/2021_survey_48_0.png)
     
 
 
@@ -585,7 +586,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_48_0.png)
+![png](/images/2021_survey/2021_survey_50_0.png)
     
 
 
@@ -600,7 +601,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_50_0.png)
+![png](/images/2021_survey/2021_survey_52_0.png)
     
 
 
@@ -623,7 +624,7 @@ ax.set(ylabel="", title="Is Dask resilient enough for you?");
 
 
     
-![png](2021_survey_files/2021_survey_52_0.png)
+![png](/images/2021_survey/2021_survey_54_0.png)
     
 
 
@@ -638,7 +639,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_54_0.png)
+![png](/images/2021_survey/2021_survey_56_0.png)
     
 
 
@@ -653,7 +654,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_56_0.png)
+![png](/images/2021_survey/2021_survey_58_0.png)
     
 
 
@@ -668,7 +669,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_58_0.png)
+![png](/images/2021_survey/2021_survey_60_0.png)
     
 
 
@@ -683,7 +684,7 @@ ax.set(ylabel="", title="Would you pin to a long term support release?");
 
 
     
-![png](2021_survey_files/2021_survey_60_0.png)
+![png](/images/2021_survey/2021_survey_62_0.png)
     
 
 
@@ -693,7 +694,7 @@ We asked a bunch of new questions about user satisfaction in the 2021 survey.
 
 ### How easy is Dask to use?
 
-The majority of people say that Dask is moderately easy to use. This 
+The majority of people say that Dask is moderately easy to use, the same as in previous surveys.
 
 
 ```python
@@ -704,7 +705,7 @@ ax.set(ylabel="1 = Difficult, 5 = Easy", title="How easy is Dask to use?");
 
 
     
-![png](2021_survey_files/2021_survey_63_0.png)
+![png](/images/2021_survey/2021_survey_65_0.png)
     
 
 
@@ -721,7 +722,7 @@ ax.set(ylabel="1 = Not good, 5 = Great", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_65_0.png)
+![png](/images/2021_survey/2021_survey_67_0.png)
     
 
 
@@ -739,7 +740,7 @@ ax.set(ylabel="1 = Not satisfied, 5 = Thrilled", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_67_0.png)
+![png](/images/2021_survey/2021_survey_69_0.png)
     
 
 
@@ -771,7 +772,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_69_0.png)
+![png](/images/2021_survey/2021_survey_71_0.png)
     
 
 
@@ -797,7 +798,7 @@ ax.set(ylabel="", title=q);
 
 
     
-![png](2021_survey_files/2021_survey_72_0.png)
+![png](/images/2021_survey/2021_survey_74_0.png)
     
 
 
@@ -836,7 +837,7 @@ ax.set(ylabel="", title="What field do you want more documentation examples for?
 
 
     
-![png](2021_survey_files/2021_survey_74_0.png)
+![png](/images/2021_survey/2021_survey_76_0.png)
     
 
 
@@ -866,16 +867,12 @@ counts = pd.concat([a, b, c], ignore_index=True)
 
 d = common.stack().reset_index().rename(columns={"level_2": "Feature", 0: "Importance"})
 order = ["Not relevant for me", "Somewhat useful", 'Critical to me']
-sns.catplot('Importance', row="Feature", kind="count", col="Year", data=d, sharex=False, order=order);
+sns.catplot(x='Importance', row="Feature", kind="count", col="Year", data=d, sharex=False, order=order);
 ```
-
-    /home/genevieve/anaconda3/envs/dask/lib/python3.8/site-packages/seaborn/_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
-      warnings.warn(
-
 
 
     
-![png](2021_survey_files/2021_survey_76_1.png)
+![png](/images/2021_survey/2021_survey_78_0.png)
     
 
 
