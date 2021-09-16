@@ -1,3 +1,12 @@
+---
+layout: post
+title: 2021 Dask User Survey
+author: Genevieve Buckley
+tags: [User Survey]
+theme: twitter
+---
+{% include JB/setup %}
+
 # 2021 Dask User Survey Results
 
 This post presents the results of the 2021 Dask User Survey, which ran earlier this year.
