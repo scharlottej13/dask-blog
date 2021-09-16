@@ -148,14 +148,13 @@ ax.set(ylabel="", title=q);
     
 
 
-In the last year, there has been an increase in the number of people who say that many people throughout their institution use Dask (32 people said this in 2021, compared to 19 in 2020).
+In the last year, there has been an increase in the number of people who say that many people throughout their institution use Dask (32 people said this in 2021, compared to 19 in 2020). Between 2019 and 2020, there was a drop in the number of people who said their immediate team also uses Dask (121 people said this in 2019, compared to 94 in 2020). It's not clear why we saw either of these changes, so it will be interesting to see what happens in future years.
 
 
 ```python
 q = 'Do you use Dask as part of a larger group?'
-ans = 'Beyond my group, many people throughout my institution use Dask'
-ax = sns.countplot(x=q, hue="Year", data=df.reset_index(), order=[ans], palette='Set1');
-ax.set(title="How widespread Dask use within organisations has changed over time");
+ax = sns.countplot(y=q, hue="Year", data=df.reset_index());
+ax.set(ylabel="", title=q);
 ```
 
 
@@ -505,7 +504,7 @@ order = [
     "Amazon Web Services (AWS)",
     "Google Cloud Platform (GCP)",
     "Microsoft Azure",
-    "Digital Ocean",
+    "Digital Ocean",    
 ]
 ax = sns.countplot(y=q, data=df2021[q].dropna().str.split(", ").explode().to_frame(), order=order);
 ax.set(ylabel="", title=q);
