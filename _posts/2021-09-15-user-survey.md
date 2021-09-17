@@ -7,8 +7,6 @@ theme: twitter
 ---
 {% include JB/setup %}
 
-# 2021 Dask User Survey Results
-
 This post presents the results of the 2021 Dask User Survey, which ran earlier this year.
 Thanks to everyone who took the time to fill out the survey!
 These results help us better understand the Dask community and will guide future development efforts.
