@@ -199,7 +199,7 @@ ways:
 
 2.  As live-runnable notebooks on the cloud using [mybinder.org](https://mybinder.org).
     You can play with any of these notebooks by clicking on this button:
-    [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/dask/dask-examples/master?urlpath=lab).
+    [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/dask/dask-examples/main?urlpath=lab).
 
     This allows people to explore more deeply.  Also, because we've connected
     up the Dask JupyterLab extension to this environment, users get an
