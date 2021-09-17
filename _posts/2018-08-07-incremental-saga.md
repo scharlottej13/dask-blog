@@ -189,7 +189,7 @@ def full_saga(data, max_iter=100, callback=None):
 ### Step 2: Apply dask.delayed
 
 Once functions neither modified their inputs nor relied on global state we went
-over a [dask.delayed example](https://mybinder.org/v2/gh/dask/dask-examples/master?filepath=delayed.ipynb),
+over a [dask.delayed example](https://mybinder.org/v2/gh/dask/dask-examples/main?urlpath=%2Ftree%2Fdelayed.ipynb),
 and then applied the `@dask.delayed` decorator to the functions that
 Fabian had written.  Fabian did this at first in about five minutes and to our
 mutual surprise, things actually worked
