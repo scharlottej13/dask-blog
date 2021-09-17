@@ -13,7 +13,7 @@ These results help us better understand the Dask community and will guide future
 
 The raw data, as well as the start of an analysis, can be found in this binder:
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/dask/dask-examples/main?filepath=surveys/2021.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/dask/dask-examples/main?urlpath=%2Ftree%2Fsurveys%2F2021.ipynb)
 
 Let us know if you find anything in the data.
 
