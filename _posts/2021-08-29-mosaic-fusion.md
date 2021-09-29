@@ -9,11 +9,10 @@ theme: twitter
 
 ## Executive Summary
 
-This blogpost shows a case study, where a researcher uses Dask for mosaic image fusion, i.e. merging  stitching multiple smaller images taken at known locations together into a very large field of view. Full code examples are available on GitHub from the `DaskFusion` repository: https://github.com/VolkerH/DaskFusion
+This blogpost shows a case study, where a researcher uses Dask for mosaic image fusion.
+Mosaic image fusion is when you combine multiple smaller images taken at known locations and stitch them together into a single image with a very large field of view. Full code examples are available on GitHub from the `DaskFusion` repository: https://github.com/VolkerH/DaskFusion
 
-This work was done by Volker Hilsenstein, in conjunction with Marvin Albert. Genevieve Buckley wrote the blogpost.
-
-Volker Hilsenstein is a scientific software developer at [EMBL in Theodore Alexandrov's lab](https://www.embl.org/groups/alexandrov/) with a focus on spatial metabolomics an bio-image analysis. 
+This work was done by Volker Hilsenstein, in conjunction with Marvin Albert. Genevieve Buckley and Volker Hilsenstein wrote the blogpost. Volker Hilsenstein is a scientific software developer at [EMBL in Theodore Alexandrov's lab](https://www.embl.org/groups/alexandrov/) with a focus on spatial metabolomics an bio-image analysis.
 
 ## The problem
 
@@ -48,15 +47,14 @@ Typically whenever we want to join dask arrays, we use [Stack, Concatenate, and 
 1. the image tiles will be be overlapping,
 2. in the general case, individual image tiles may not be positioned on an exact grid and they can also have small rotations.
 
-
-
-
-`block_info` dictionary and creating some
-pseudo-code together, I managed to implement mosaic fusion in Dask Image.
-
-From the dask documentaion:
+Using the `block_info` dictionary and creating some pseudo-code together, Volker managed to implement mosaic fusion with `dask-image`. From the [Dask documentaion](https://docs.dask.org/en/latest/generated/dask.array.map_blocks.html?highlight=block_info#dask.array.map_blocks):
 > Your block function gets information about where it is in the array by accepting a special `block_info` or `block_id` keyword argument.
 
+The basic outline of the image mosiac workflow is as follows:
+1. Read in image tiles acquired from the microscope
+2. Calculate the location of the image tiles, using information from the sample stage position at the time each image tile was acquired
+3. Use an affine transformation to place the image tiles in their proper location
+4. Fuse the combined images into a single result
 
 ### Results
 
@@ -76,19 +74,15 @@ Code relatiing to this mosaic image fusion project can be found in the `DaskFusi
 
 There is a self-contained example available in [this notebook](https://github.com/VolkerH/DaskFusion/blob/main/Load_Mosaic.ipynb), which downloads reduced-size example data to demonstrate the process.
 
-
-
-
 ## What's next?
 
 Currently, the DaskFusion code is a proof of concept for single-channel 2D images and simple maximum projection for blending the tiles in overlapping areas.
 However, the same principle can be used for fusing multi-channel image volumes,
-such as from Light-Sheet data if the tile chunk intersection calculation is extended to higher-dimensional 
-arrays.
+such as from Light-Sheet data if the tile chunk intersection calculation is extended to higher-dimensional arrays.
 Such even larger datasets will benefit even more from leveraging dask,
-as the processing can be distributed across multiple nodes of a HPC cluster using dask jobqueue.
+as the processing can be distributed across multiple nodes of a HPC cluster using [dask jobqueue](http://jobqueue.dask.org/en/latest/).
 
 ### Also see
 Marvin's lightning talk on multi-view image fusion is up online now: https://www.youtube.com/watch?v=YIblUvonMvo&list=PLJ0vO2F_f6OBAY6hjRHM_mIQ9yh32mWr0&index=10
 
-[MVRegFus](https://github.com/m-albert/MVRegFus)
+The GitHub repository [MVRegFus](https://github.com/m-albert/MVRegFus) that Marvin talks about in the video is available here: https://github.com/m-albert/MVRegFus
