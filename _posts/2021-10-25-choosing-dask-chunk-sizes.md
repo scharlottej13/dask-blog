@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to choose good chunk sizes for Dask
+title: CZI EOSS Update
 author: Genevieve Buckley
 tags: [performance]
 theme: twitter
