@@ -1,11 +1,13 @@
 ---
 layout: post
-title: CZI EOSS Update
+title: Choosing good chunk sizes in Dask
 author: Genevieve Buckley
 tags: [performance]
 theme: twitter
 ---
 {% include JB/setup %}
+
+## Summary
 
 Confused about choosing [a good chunk size](https://docs.dask.org/en/latest/array-best-practices.html#select-a-good-chunk-size) for Dask arrays?
 
@@ -15,6 +17,14 @@ It's a two step process:
 
 1. First, start by choosing a chunk size similar to data you know can be processed entirely within memory (i.e. without dask)
 2. Then, watch the dask dashboard task stream and worker memory plots, and adjust if needed.
+
+
+## Contents
+
+- [ What are Dask array chunks?](#what-are-dask-array-chunks)
+- [Too small is a problem](#too-small-is-a-problemg)
+- [Too big is also a problem](#too-big-is-also-a-problem)
+- [Using the Dask dashboard](#using-the-Dask-dashboard)
 
 ## What are Dask array chunks?
 
@@ -53,7 +63,7 @@ To avoid data being spilled to disk, watch the **worker memory plot** on the das
 Orange bars are a warning you are close to the limit, and gray means data is being spilled to disk - not good!
 Take a look at the next section for tips on using the Dask dashboard.
 
-## Use the Dask dashboard
+## Using the Dask dashboard
 
 If you're not very familiar with the Dask dashboard, or you just sometimes forget where to find certain dashboard plots (like the worker memory plot), then you'll probably enjoy these quick video tutorials:
 
@@ -63,6 +73,7 @@ If you're not very familiar with the Dask dashboard, or you just sometimes forge
 
 We recommend always having the dashboard up when you're working with Dask.
 It's a fantastic way to get a sense of what's working well, or poorly, so you can make adjustments.
+
 ## Unmanaged memory
 
 Remember that you don't only need to consider the size of the array chunks in memory, but also the working memory consumed by your analysis functions. Sometimes that is called "unmanaged memory" in Dask.
