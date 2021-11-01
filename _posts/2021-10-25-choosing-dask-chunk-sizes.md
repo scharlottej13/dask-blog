@@ -50,6 +50,14 @@ If you have a Dask array, you can use the `chunksize` or `chunks` attribues to s
 
 ## Choosing an intial chunk size
 
+Some very rough rules of thumb:
+
+- When developing a new data processing pipeline, many people create a prototype using a small subset of the data, which may not involve Dask at all. This is helpful for quickly iterating on ideas, and also has the secondary benefit of giving you a clear idea of what size data can be processed easily for this workflow. You can use this knowledge to choose similar sized chunks in Dask.
+- Some people have observed that chunk sizes below 1MB are almost always bad. Chunk size between 50MB and 1GB are generally good (and chunk sizes over 2GB may be too big - but this upper limit varies a huge amount depending on the computational resources you have available, so adjust for your circumstances)
+- Upper bound: Avoid too very large task graphs. More than 10,000 or 100,000 chunks will perform poorly for this reason.
+- Lower bound: To get the advantage of parallization, you need the number of chunks to at least equal the number of workers available (or better, the number of workers times 2). Otherwise, if the number of chunks is less than the number of workers, some workers will stay idle.
+- The time taken to compute each task should be much larger than the time needed to schedule the task. The Dask scheduler takes roughly 1 millisecond to coordinate a single task, so a good task computation time would be measured in seconds (not milliseconds).
+
 ### Chunks should be aligned with array storage on disk
 
 If you are reading data from disk, the storage structure will inform what shape your Dask array chunks should be. For best performance, choose chunks that are well aligned with the way data is stored.
@@ -77,9 +85,6 @@ rechunked_array = original_array.rechunk(new_shape)
 For these reasons, it is best to avoid rechunking. However, sometimes the data is stored on disk is not well aligned and rechunking may be necessary.
 For an example of this, here is Draga Doncila Pop [talking about chunk alignment](https://youtu.be/10Ws59NGDaE?t=833) with satellite image data.
 
-### Rough rules of thumb
-
-
 ## Too small is a problem
 
 If array chunks are too small, it's inefficient. Why is this?
@@ -87,6 +92,8 @@ If array chunks are too small, it's inefficient. Why is this?
 Using Dask introduces some amount of overhead for each task in your computation.
 This overhead is the reason the Dask best practices advise you to [avoid too-large graphs](https://docs.dask.org/en/latest/best-practices.html#avoid-very-large-graphs).
 This is because if the amount of actual work done by each task is very tiny, then the percentage of overhead time vs useful work time is not good.
+
+Typically, the Dask scheduler takes 1 millisecond to coordinate a single task. That means we want the computation time for each task to be comparitively larger, eg: seconds instead of milliseconds.
 
 It might be hard to understand this intuitively, so here's an analogy. Let's imagine we're building a house. It's a pretty big job, and if there were only one worker it would take much too long to build.
 So we have a team of workers and a site foreman. The site foreman is equivalent to the Dask scheduler: their job is to tell the workers what tasks they need to do.
@@ -100,8 +107,9 @@ Instead, we can do this in a smarter way. The foreman (Dask scheduler) can tell 
 
 If the Dask array chunks are too big, this is also bad. Why?
 Chunks that are too large are bad because then you are likely to run out of working memory.
+You may see out of memory errors happening, or you might see performance decrease substantially as data spills to disk.
 
-When this happens, Dask will try to spill data to disk instead of crashing.
+When too much data is loaded in memory on too few workers, Dask will try to spill data to disk instead of crashing.
 Spilling data to disk makes things run very slowly, because all the extra read/write operations to disk. Things don't just get a little bit slower, they get a LOT slower, so it's smart to watch out for this.
 
 To avoid data being spilled to disk, watch the **worker memory plot** on the dask dashboard.
