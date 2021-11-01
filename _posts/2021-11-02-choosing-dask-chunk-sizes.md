@@ -22,7 +22,7 @@ It's a two step process:
 ## Contents
 
 - [ What are Dask array chunks?](#what-are-dask-array-chunks)
-- [Choosing an intial chunk size](#choosing-an-intial-chunk-size)
+- [Choosing an initial chunk size](#choosing-an-initial-chunk-size)
 - [Too small is a problem](#too-small-is-a-problemg)
 - [Too big is also a problem](#too-big-is-also-a-problem)
 - [Using the Dask dashboard](#using-the-Dask-dashboard)
@@ -48,7 +48,7 @@ If you have a Dask array, you can use the `chunksize` or `chunks` attribues to s
 
 `arr.chunks` shows fully explicit sizes of all chunks along all dimensions within the Dask array (see [item 3 here](https://docs.dask.org/en/stable/array-chunks.html#specifying-chunk-shapes)). This is more verbose, and is a good choice with arrays that have irregular chunks.
 
-## Choosing an intial chunk size
+## Choosing an initial chunk size
 
 Some very rough rules of thumb:
 
