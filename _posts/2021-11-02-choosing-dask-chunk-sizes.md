@@ -38,7 +38,7 @@ Typically, each small chunk is an individual [numpy array](https://numpy.org/), 
 
 You can find more information about Dask array chunks on this page of the documentation: https://docs.dask.org/en/latest/array-chunks.html
 
-### How do I nkow what chunks my array has?
+### How do I know what chunks my array has?
 
 If you have a Dask array, you can use the `chunksize` or `chunks` attribues to see information about the chunks. You can also visualize this with the Dask array HTML representation.
 
