@@ -112,7 +112,7 @@ You may see out of memory errors happening, or you might see performance decreas
 When too much data is loaded in memory on too few workers, Dask will try to spill data to disk instead of crashing.
 Spilling data to disk makes things run very slowly, because all the extra read/write operations to disk. Things don't just get a little bit slower, they get a LOT slower, so it's smart to watch out for this.
 
-To avoid data being spilled to disk, watch the **worker memory plot** on the dask dashboard.
+To avoid data being spilled to disk, watch the **worker memory plot** on the Dask dashboard.
 Orange bars are a warning you are close to the limit, and gray means data is being spilled to disk - not good!
 Take a look at the next section for tips on using the Dask dashboard.
 
