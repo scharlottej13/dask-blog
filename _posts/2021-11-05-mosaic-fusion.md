@@ -34,7 +34,7 @@ in the overlapping areas.
 ## The solution
 
 The array that can hold resulting mosaic image will often have a size that is too large 
-to fit in RAM, therefore we will use Dask arrays and the `map_block` function to enable 
+to fit in RAM, therefore we will use Dask arrays and the [`map_blocks`](https://docs.dask.org/en/latest/generated/dask.array.map_blocks.html) function to enable 
 out-of-core processing. As an added benefit, we will get parallel processing for free
 which speeds up the fusion process.
 
