@@ -53,7 +53,7 @@ If you have a Dask array, you can use the `chunksize` or `chunks` attribues to s
 Some very rough rules of thumb:
 
 - If you already created a prototype, which may not involve Dask at all, using a small subset of the data you intend to process, you'll have a clear idea of what size of data can be processed easily for this workflow. You can use this knowledge to choose similar sized chunks in Dask.
-- Some people have observed that chunk sizes below 1MB are almost always bad. Chunk size between 50MB and 1GB are generally good (and chunk sizes over 2GB may be too big - but this upper limit varies a huge amount depending on the computational resources you have available, so adjust for your circumstances)
+- Some people have observed that chunk sizes below 1MB are almost always bad. Chunk size between 50MB and 1GB are generally good, going over 1 or 2GB means you have a really big dataset and/or a lot of memory available per core,
 - Upper bound: Avoid too very large task graphs. More than 10,000 or 100,000 chunks will perform poorly for this reason.
 - Lower bound: To get the advantage of parallization, you need the number of chunks to at least equal the number of workers available (or better, the number of workers times 2). Otherwise, if the number of chunks is less than the number of workers, some workers will stay idle.
 - The time taken to compute each task should be much larger than the time needed to schedule the task. The Dask scheduler takes roughly 1 millisecond to coordinate a single task, so a good task computation time would be measured in seconds (not milliseconds).
