@@ -15,7 +15,7 @@ Array chunks can't be too big (we'll run out of memory), or too small (the overh
 
 It's a two step process:
 
-1. First, start by choosing a chunk size similar to data you know can be processed entirely within memory (i.e. without dask)
+1. First, start by choosing a chunk size similar to data you know can be processed entirely within memory (i.e. without Dask)
 2. Then, watch the dask dashboard task stream and worker memory plots, and adjust if needed.
 
 
