@@ -15,17 +15,22 @@ Array chunks can't be too big (we'll run out of memory), or too small (the overh
 
 It's a two step process:
 
-1. First, start by choosing a chunk size similar to data you know can be processed entirely within memory (i.e. without Dask)
-2. Then, watch the Dask dashboard task stream and worker memory plots, and adjust if needed.
+1. First, start by choosing a chunk size similar to data you know can be processed entirely within memory (i.e. without Dask), using these [rough rules of thumb](#rough-rules-of-thumb).
+2. Then, watch the Dask dashboard task stream and worker memory plots, and adjust if needed. [Here are the signs to watch out for](#what-to-watch-for-on-the-dashboard).
 
 
 ## Contents
 
 - [ What are Dask array chunks?](#what-are-dask-array-chunks)
-- [Choosing an initial chunk size](#choosing-an-initial-chunk-size)
 - [Too small is a problem](#too-small-is-a-problemg)
 - [Too big is also a problem](#too-big-is-also-a-problem)
-- [Using the Dask dashboard](#using-the-Dask-dashboard)
+- [Choosing an initial chunk size](#choosing-an-initial-chunk-size)
+  - [Rough rules of thumb](#rough-rules-of-thumb)
+  - [Chunks should be aligned with array storage on disk](#chunks-should-be-aligned-with-array-storage-on-disk)
+- [Using the Dask dashboard](#using-the-dask-dashboard)
+  - [What to watch for on the dashboard
+](#what-to-watch-for-on-the-dashboard)
+- [Rechunking arrays](#rechunking-arrays)
 - [Unmanaged memory](#unmanaged-memory)
 - [Thanks for reading](#thanks-for-reading)
 
@@ -48,42 +53,6 @@ If you have a Dask array, you can use the `chunksize` or `chunks` attribues to s
 
 `arr.chunks` shows fully explicit sizes of all chunks along all dimensions within the Dask array (see [item 3 here](https://docs.dask.org/en/stable/array-chunks.html#specifying-chunk-shapes)). This is more verbose, and is a good choice with arrays that have irregular chunks.
 
-## Choosing an initial chunk size
-
-Some very rough rules of thumb:
-
-- If you already created a prototype, which may not involve Dask at all, using a small subset of the data you intend to process, you'll have a clear idea of what size of data can be processed easily for this workflow. You can use this knowledge to choose similar sized chunks in Dask.
-- Some people have observed that chunk sizes below 1MB are almost always bad. Chunk size between 50MB and 1GB are generally good, going over 1 or 2GB means you have a really big dataset and/or a lot of memory available per core,
-- Upper bound: Avoid too large task graphs. More than 10,000 or 100,000 chunks may start to perform poorly.
-- Lower bound: To get the advantage of parallization, you need the number of chunks to at least equal the number of workers available (or better, the number of workers times 2). Otherwise, if the number of chunks is less than the number of workers, some workers will stay idle.
-- The time taken to compute each task should be much larger than the time needed to schedule the task. The Dask scheduler takes roughly 1 millisecond to coordinate a single task, so a good task computation time would be measured in seconds (not milliseconds).
-
-### Chunks should be aligned with array storage on disk
-
-If you are reading data from disk, the storage structure will inform what shape your Dask array chunks should be. For best performance, choose chunks that are well aligned with the way data is stored.
-
-From the Dask best practices on how to [orient your chunks](https://docs.dask.org/en/stable/array-best-practices.html#orient-your-chunks):
-
-> When reading data you should align your chunks with your storage format. Most array storage formats store data in chunks themselves. If your Dask array chunks aren’t multiples of these chunk shapes then you will have to read the same data repeatedly, which can be expensive. Note though that often storage formats choose chunk sizes that are much smaller than is ideal for Dask, closer to 1MB than 100MB. In these cases you should choose a Dask chunk size that aligns with the storage chunk size and that every Dask chunk dimension is a multiple of the storage chunk dimension.
-
-Some examples of data storage structures on disk include:
-- A HDF5 or [Zarr array](https://zarr.readthedocs.io/en/stable/api/core.html). The size and shape of chunks/blocks stored on disk should align well with the Dask array chunks you select.
-- A folder full of tiff files. You might decide that each tiff file should become a single chunk in the Dask array (or that multiple tiff files should be grouped into a single chunk).
-
-### Rechunking arrays
-
-If you want to change the chunking of a Dask array, you can do that with the [rechunk](https://docs.dask.org/en/latest/generated/dask.array.rechunk.html) method.
-
-```python
-rechunked_array = original_array.rechunk(new_shape)
-```
-
-**Warning:** Rechunking Dask arrays comes at a cost.
-- The Dask graph must be rearranged to accomodate the new chunk structure. This happens immediately, and will block any other interaction with python until Dask has rearranged the task graph.
-- This also inserts new tasks into the Dask graph. At compute time, there are now more tasks to execute.
-
-For these reasons, it is best to avoid rechunking. However, sometimes the data is stored on disk is not well aligned and rechunking may be necessary.
-For an example of this, here is Draga Doncila Pop [talking about chunk alignment](https://youtu.be/10Ws59NGDaE?t=833) with satellite image data.
 
 ## Too small is a problem
 
@@ -112,11 +81,35 @@ You may see out of memory errors happening, or you might see performance decreas
 When too much data is loaded in memory on too few workers, Dask will try to spill data to disk instead of crashing.
 Spilling data to disk makes things run very slowly, because all the extra read/write operations to disk. Things don't just get a little bit slower, they get a LOT slower, so it's smart to watch out for this.
 
-To avoid data being spilled to disk, watch the **worker memory plot** on the Dask dashboard.
+To watch out for this, look at the **worker memory plot** on the Dask dashboard.
 Orange bars are a warning you are close to the limit, and gray means data is being spilled to disk - not good!
-Take a look at the next section for tips on using the Dask dashboard.
+For more tips, see the section on [using the Dask dashboard](#using-the-Dask-dashboard) below.
+
+## Choosing an initial chunk size
+
+### Rough rules of thumb
+
+- If you already created a prototype, which may not involve Dask at all, using a small subset of the data you intend to process, you'll have a clear idea of what size of data can be processed easily for this workflow. You can use this knowledge to choose similar sized chunks in Dask.
+- Some people have observed that chunk sizes below 1MB are almost always bad. Chunk size between 100MB and 1GB are generally good, going over 1 or 2GB means you have a really big dataset and/or a lot of memory available per core,
+- Upper bound: Avoid too large task graphs. More than 10,000 or 100,000 chunks may start to perform poorly.
+- Lower bound: To get the advantage of parallelization, you need the number of chunks to at least equal the number of worker cores available (or better, the number of worker cores times 2). Otherwise, some workers will stay idle.
+- The time taken to compute each task should be much larger than the time needed to schedule the task. The Dask scheduler takes roughly 1 millisecond to coordinate a single task, so a good task computation time would be measured in seconds (not milliseconds).
+
+### Chunks should be aligned with array storage on disk
+
+If you are reading data from disk, the storage structure will inform what shape your Dask array chunks should be. For best performance, choose chunks that are well aligned with the way data is stored.
+
+From the Dask best practices on how to [orient your chunks](https://docs.dask.org/en/stable/array-best-practices.html#orient-your-chunks):
+
+> When reading data you should align your chunks with your storage format. Most array storage formats store data in chunks themselves. If your Dask array chunks aren’t multiples of these chunk shapes then you will have to read the same data repeatedly, which can be expensive. Note though that often storage formats choose chunk sizes that are much smaller than is ideal for Dask, closer to 1MB than 100MB. In these cases you should choose a Dask chunk size that aligns with the storage chunk size and that every Dask chunk dimension is a multiple of the storage chunk dimension.
+
+Some examples of data storage structures on disk include:
+- A HDF5 or [Zarr array](https://zarr.readthedocs.io/en/stable/api/core.html). The size and shape of chunks/blocks stored on disk should align well with the Dask array chunks you select.
+- A folder full of tiff files. You might decide that each tiff file should become a single chunk in the Dask array (or that multiple tiff files should be grouped into a single chunk).
 
 ## Using the Dask dashboard
+
+The second part of choosing a good chunk size is monitoring the Dask dashboard to see if you need to make any adjustments.
 
 If you're not very familiar with the Dask dashboard, or you just sometimes forget where to find certain dashboard plots (like the worker memory plot), then you'll probably enjoy these quick video tutorials:
 
@@ -126,6 +119,8 @@ If you're not very familiar with the Dask dashboard, or you just sometimes forge
 
 We recommend always having the dashboard up when you're working with Dask.
 It's a fantastic way to get a sense of what's working well, or poorly, so you can make adjustments.
+
+### What to watch for on the dashboard
 
 Bad signs to watch out for include:
 - Lots of white space in the task stream plot is a bad sign. White space means nothing is happening. Chunks may be too small.
@@ -140,6 +135,27 @@ For comparison, here is an example of the Dask dashboard during a bad computatio
 
 In this example, it's inefficient because the chunks are much too small, so we see a lot of white space and red worker communication in the task stream plot.
 ![Visualizating Dask array chunks with the HTML repr](/images/choosing-good-chunk-sizes/bad-dask-dashboard-zoomedin.png)
+
+## Rechunking arrays
+
+If you need to change the chunking of a Dask array in the middle of a computation, you can do that with the [rechunk](https://docs.dask.org/en/latest/generated/dask.array.rechunk.html) method.
+
+```python
+rechunked_array = original_array.rechunk(new_shape)
+```
+
+**Warning:** Rechunking Dask arrays comes at a cost.
+- The Dask graph must be rearranged to accomodate the new chunk structure. This happens immediately, and will block any other interaction with python until Dask has rearranged the task graph.
+- This also inserts new tasks into the Dask graph. At compute time, there are now more tasks to execute.
+
+For these reasons, it is best to choose a good initial chunk size and avoid rechunking.
+
+However, sometimes the data is stored on disk is not well aligned and rechunking may be necessary.
+For an example of this, here is Draga Doncila Pop [talking about chunk alignment](https://youtu.be/10Ws59NGDaE?t=833) with satellite image data.
+
+The [rechunker](https://rechunker.readthedocs.io/en/latest/) library can be useful in these situations:
+
+> Rechunker takes an input array (or group of arrays) stored in a persistent storage device (such as a filesystem or a cloud storage bucket) and writes out an array (or group of arrays) with the same data, but different chunking scheme, to a new location. Rechunker is designed to be used within a parallel execution framework such as Dask.
 
 ## Unmanaged memory
 
