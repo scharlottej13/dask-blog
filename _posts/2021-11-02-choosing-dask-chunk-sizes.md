@@ -170,4 +170,4 @@ Here are some tips for handling unmanaged memory:
 
 ## Thanks for reading
 
-We hope this was helpful figuring out how to choose good chunk sizes for Dask. This blogpost was inspired by [this twitter thread](https://twitter.com/DataNerdery/status/1424953376043790341). If you'd like to follow Dask on Twitter, you can do that at https://twitter.com/dask_dev
+We hope this was helpful figuring out how to choose good chunk sizes for Dask. This blogpost was inspired by [this twitter thread](https://twitter.com/DataNerdery/status/1424953376043790341). If you'd like to follow Dask on Twitter, you can do that at [https://twitter.com/dask_dev](https://twitter.com/dask_dev)
