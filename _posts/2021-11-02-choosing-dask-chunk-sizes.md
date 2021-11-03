@@ -41,18 +41,18 @@ Typically, each small chunk is an individual [numpy array](https://numpy.org/), 
 
 <img src="https://raw.githubusercontent.com/dask/dask/ac01ddc9074365e40d888f80f5bcd955ba01e872/docs/source/images/dask-array-black-text.svg" alt="Diagram: Dask array chunks" width="400" height="300" />
 
-You can find more information about Dask array chunks on this page of the documentation: https://docs.dask.org/en/latest/array-chunks.html
+You can find more information about Dask array chunks on this page of the documentation: [https://docs.dask.org/en/latest/array-chunks.html](https://docs.dask.org/en/latest/array-chunks.html)
 
 ### How do I know what chunks my array has?
 
 If you have a Dask array, you can use the `chunksize` or `chunks` attribues to see information about the chunks. You can also visualize this with the Dask array HTML representation.
 
-![Visualizating Dask array chunks with the HTML repr](/images/choosing-good-chunk-sizes/examine-dask-array-chunks.png)
+
+<img src="/images/choosing-good-chunk-sizes/examine-dask-array-chunks.png" alt="Visualizating Dask array chunks with the HTML repr" width="611" height="523" />
 
 `arr.chunksize` shows the largest chunk size. For arrays where you expect roughly uniform chunk sizes, this is a good way to summarize chunk size information.
 
 `arr.chunks` shows fully explicit sizes of all chunks along all dimensions within the Dask array (see [item 3 here](https://docs.dask.org/en/stable/array-chunks.html#specifying-chunk-shapes)). This is more verbose, and is a good choice with arrays that have irregular chunks.
-
 
 ## Too small is a problem
 
