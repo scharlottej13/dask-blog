@@ -19,43 +19,57 @@ Mosaic image fusion is when you combine multiple smaller images taken at known l
 In optical microscopy, a single field of view captured with a 20x objective typically
 has a diagonal on the order of a few 100 um (exact dimensions depend on other
 parts of the optical system, including the size of the camera chip). A typical 
-sample slide has a size of 25mm * 70mm. 
-So when imaging a whole slide, one has to acquire hundreds of images, typically
-with some overlap between individual tiles.  With increasing magnifcation,
+sample slide has a size of 25mm * 75mm. 
+Therefore, when imaging a whole slide, one has to acquire hundreds of images, typically
+with some overlap between individual tiles. With increasing magnification,
 the required number of images increases accordingly. 
 
 To obtain an overview one has to fuse this large number of individual
-image tiles into a large mosaic image. Herer, we assume that the inforamtion requiring for 
-positioning and alignment of the individual image tiles is already available. In our case,
-this information is available based on the the metadata recorded by the microscope, however this
-information could also be from  previous registration step that matches image features 
-in the overlapping areas.
+image tiles into a large mosaic image. Herer, we assume that the information required for 
+positioning and alignment of the individual image tiles is known. In the example presented here,
+this information is available as metadata recorded by the microscope, namely the microscope stage
+position and the pixel scale. Alternatively, this
+information could also be derived from the image data directly, e.g. through a
+registration step that matches corresponding image features in the areas where tiles overlap.
 
 ## The solution
 
 The array that can hold resulting mosaic image will often have a size that is too large 
 to fit in RAM, therefore we will use Dask arrays and the [`map_blocks`](https://docs.dask.org/en/latest/generated/dask.array.map_blocks.html) function to enable 
-out-of-core processing. As an added benefit, we will get parallel processing for free
-which speeds up the fusion process.
+out-of-core processing. The `map_blocks` function will process smaller blocks (a.k.a chunks) of the output array individually, thus eliminating the need to
+hold the whole output array in memory. If sufficient resources are available, dask will also distribute the processing of blocks across several workers,
+thus we also get parallel processing for free, which can help speed up the fusion process.
+
 
 Typically whenever we want to join Dask arrays, we use [Stack, Concatenate, and Block](https://docs.dask.org/en/latest/array-stack.html). However, these are not good tools for mosaic image fusion, because:
 
 1. The image tiles will be be overlapping,
-2. In the general case, individual image tiles may not be positioned on an exact grid and they can also have small rotations.
+2. Tiles may not be positioned on an exact grid and will typically also have slight rotations as the alignment of stage and camera is not perfect. In the most general case, for example in panaromic photo mosaics,
+individual image tiles could be arbitrarily rotated or skewed.
 
-Using the `block_info` dictionary and creating some pseudo-code together, Volker managed to implement mosaic fusion with `dask-image`. From the [Dask documentaion](https://docs.dask.org/en/latest/generated/dask.array.map_blocks.html?highlight=block_info#dask.array.map_blocks):
+The starting point for this mosaic prototype was some code that reads in the stage metadate for all tiles and calculates an affine transformation for each tile that would place it at the correct location
+in the output array. 
+To leverage `dask-array` we created a `fuse` function that generates a small block of the final mosaic and is invoked by `map_blocks` for each chunk of the output array. 
+On each invocation of the `fuse` function  `map_blocks` passes a dictionary (`block_info`).  From the [Dask documentation](https://docs.dask.org/en/latest/generated/dask.array.map_blocks.html?highlight=block_info#dask.array.map_blocks):
 > Your block function gets information about where it is in the array by accepting a special `block_info` or `block_id` keyword argument.
 
-The basic outline of the image mosiac workflow is as follows:
-1. Read in image tiles acquired from the microscope.
-2. Calculate the location of the image tiles, using information from the sample stage position at the time each image tile was acquired.
-3. Use an affine transformation to place the image tiles in their proper location.
-4. Fuse the combined images into a single result.
+
+The basic outline of the `fuse` function of the mosaic workflow is as follows:
+
+For each chunk of the output array
+1. Determine which source image tiles intersect with the chunk.
+2. Adjust the image tiles' affine transformations to take the offset of the chunk within the array into account.
+3. Load all intersectiong image tiles and apply their respective adjusted affine transformation to map them into the chunk.
+4. Blend the tiles using a simple maximum projection.
+5. Return the blended chunk.
+
+Using a maximum projection to blend areas with overlapping tiles can lead to artifacts such as ghost images and visible tile
+seams, so you would typically want to use something more sophisticated in production. 
 
 ### Results
 
-Using the Dask-based image fusion method, we could achieve a speed up from several hours to tens of minutes compared to 
-a previous method based on an ImageJ plugin for datasets with many image tiles (~500-1000 tiles) on similar workstation hardware.
+For datasets with many image tiles (~500-1000 tiles), we could speed up the mosaic generation from several hours to tens of minutes using this dak-image based method 
+(compared to a previous workflow using ImageJ plugins runnning on the same workstation).
 Due to Dask's ability to handle data out-of-core and chunked array storage using zarr it is also possible to run the 
 fusion on hardware with limited RAM.
 
@@ -87,7 +101,7 @@ as the processing can be distributed across multiple nodes of a HPC cluster usin
 
 ### Also see
 
-Marvin's lightning talk on multi-view image fusion is up online now: https://www.youtube.com/watch?v=YIblUvonMvo&list=PLJ0vO2F_f6OBAY6hjRHM_mIQ9yh32mWr0&index=10
+Marvin's lightning talk on multi-view image fusion: https://www.youtube.com/watch?v=YIblUvonMvo&list=PLJ0vO2F_f6OBAY6hjRHM_mIQ9yh32mWr0&index=10
 
 The GitHub repository [MVRegFus](https://github.com/m-albert/MVRegFus) that Marvin talks about in the video is available here: https://github.com/m-albert/MVRegFus
 
