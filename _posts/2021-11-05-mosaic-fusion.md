@@ -10,7 +10,8 @@ theme: twitter
 ## Executive Summary
 
 This blogpost shows a case study where a researcher uses Dask for mosaic image fusion.
-Mosaic image fusion is when you combine multiple smaller images taken at known locations and stitch them together into a single image with a very large field of view. Full code examples are available on GitHub from the `DaskFusion` repository: https://github.com/VolkerH/DaskFusion
+Mosaic image fusion is when you combine multiple smaller images taken at known locations and stitch them together into a single image with a very large field of view. Full code examples are available on GitHub from the `DaskFusion` repository: 
+[https://github.com/VolkerH/DaskFusion](https://github.com/VolkerH/DaskFusion)
 
 ## The problem
 
@@ -19,7 +20,7 @@ Mosaic image fusion is when you combine multiple smaller images taken at known l
 In optical microscopy, a single field of view captured with a 20x objective typically
 has a diagonal on the order of a few 100 μm (exact dimensions depend on other
 parts of the optical system, including the size of the camera chip). A typical 
-sample slide has a size of 25mm * 75mm. 
+sample slide has a size of 25mm by 75mm. 
 Therefore, when imaging a whole slide, one has to acquire hundreds of images, typically
 with some overlap between individual tiles. With increasing magnification,
 the required number of images increases accordingly. 
