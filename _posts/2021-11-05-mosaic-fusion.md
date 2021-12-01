@@ -2,7 +2,7 @@
 layout: post
 title: Mosaic Image Fusion
 author: Volker Hilsenstein, Marvin Albert, and Genevieve Buckley
-tags: [life science]
+tags: [life science, image analysis]
 theme: twitter
 ---
 {% include JB/setup %}
