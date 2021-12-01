@@ -10,7 +10,7 @@ theme: twitter
 ## Executive Summary
 
 This blogpost shows a case study where a researcher uses Dask for mosaic image fusion.
-Mosaic image fusion is when you combine multiple smaller images taken at known locations and stitch them together into a single image with a very large field of view. Full code examples are available on GitHub from the `DaskFusion` repository: 
+Mosaic image fusion is when you combine multiple smaller images taken at known locations and stitch them together into a single image with a very large field of view. Full code examples are available on GitHub from the [`DaskFusion`](https://github.com/VolkerH/DaskFusion) repository: 
 [https://github.com/VolkerH/DaskFusion](https://github.com/VolkerH/DaskFusion)
 
 ## The problem
@@ -76,19 +76,20 @@ fusion on hardware with limited RAM.
 
 The image below shows mosaic image tile placement for a small example with 63 image tiles, displayed in the napari image viewer.
 
-![Mosaic fusion images in the napari image viewer](/images/mosaic-fusion/NapariMosaics.png)
+<img src="/images/mosaic-fusion/NapariMosaics.png" alt="Mosaic fusion images in the napari image viewer" width="700" height="265">
 
 And here is an animation of placing the individual tiles.
 
-![Animation of whole slide mosaic fusion images](/images/mosaic-fusion/Lama_whole_slide.gif)
+<img src="/images/mosaic-fusion/Lama_whole_slide.gif" alt="Animation of whole slide mosaic fusion images" width="700" height="361">
 
 Finally, we have the final mosaic fusion result.
 
-![Final mosaic fusion result](/images/mosaic-fusion/final-mosaic-fusion-result.png)
+<img src="/images/mosaic-fusion/final-mosaic-fusion-result.png" alt="Final mosaic fusion result" width="700" height="486">
 
 ### Code
 
-Code relatiing to this mosaic image fusion project can be found in the `DaskFusion` GitHub repository here: https://github.com/VolkerH/DaskFusion
+Code relatiing to this mosaic image fusion project can be found in the [`DaskFusion`](https://github.com/VolkerH/DaskFusion) GitHub repository here: 
+[https://github.com/VolkerH/DaskFusion](https://github.com/VolkerH/DaskFusion)
 
 There is a self-contained example available in [this notebook](https://github.com/VolkerH/DaskFusion/blob/main/DaskFusion_Example.ipynb), which downloads reduced-size example data to demonstrate the process.
 
@@ -102,9 +103,11 @@ as the processing can be distributed across multiple nodes of a HPC cluster usin
 
 ### Also see
 
-Marvin's lightning talk on multi-view image fusion: https://www.youtube.com/watch?v=YIblUvonMvo&list=PLJ0vO2F_f6OBAY6hjRHM_mIQ9yh32mWr0&index=10
+Marvin's lightning talk on multi-view image fusion: 
+[15 minute video available here on YouTube](https://www.youtube.com/watch?v=YIblUvonMvo&list=PLJ0vO2F_f6OBAY6hjRHM_mIQ9yh32mWr0&index=10)
 
-The GitHub repository [MVRegFus](https://github.com/m-albert/MVRegFus) that Marvin talks about in the video is available here: https://github.com/m-albert/MVRegFus
+The GitHub repository [MVRegFus](https://github.com/m-albert/MVRegFus) that Marvin talks about in the video is available here: 
+[https://github.com/m-albert/MVRegFus](https://github.com/m-albert/MVRegFus)
 
 ## Acknowledgements
 
