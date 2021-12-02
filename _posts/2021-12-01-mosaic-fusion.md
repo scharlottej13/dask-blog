@@ -51,6 +51,16 @@ individual image tiles could be arbitrarily rotated or skewed.
 
 The starting point for this mosaic prototype was some code that reads in the stage metadate for all tiles and calculates an affine transformation for each tile that would place it at the correct location
 in the output array. 
+
+The image below shows preliminary work placing mosaic image tiles into the correct positions using the napari image viewer.
+Shown here is a small example with 63 image tiles.
+
+<img src="/images/mosaic-fusion/NapariMosaics.png" alt="Mosaic fusion images in the napari image viewer" width="700" height="265">
+
+And here is an animation of placing the individual tiles.
+
+<img src="/images/mosaic-fusion/Lama_whole_slide.gif" alt="Animation of whole slide mosaic fusion images" width="700" height="361">
+
 To leverage processing with Dask we created a `fuse` function that generates a small block of the final mosaic and is invoked by `map_blocks` for each chunk of the output array. 
 On each invocation of the `fuse` function  `map_blocks` passes a dictionary (`block_info`).  From the [Dask documentation](https://docs.dask.org/en/latest/generated/dask.array.map_blocks.html?highlight=block_info#dask.array.map_blocks):
 > Your block function gets information about where it is in the array by accepting a special `block_info` or `block_id` keyword argument.
@@ -73,14 +83,6 @@ For datasets with many image tiles (~500-1000 tiles), we could speed up the mosa
 (compared to a previous workflow using ImageJ plugins runnning on the same workstation).
 Due to Dask's ability to handle data out-of-core and chunked array storage using zarr it is also possible to run the 
 fusion on hardware with limited RAM.
-
-The image below shows mosaic image tile placement for a small example with 63 image tiles, displayed in the napari image viewer.
-
-<img src="/images/mosaic-fusion/NapariMosaics.png" alt="Mosaic fusion images in the napari image viewer" width="700" height="265">
-
-And here is an animation of placing the individual tiles.
-
-<img src="/images/mosaic-fusion/Lama_whole_slide.gif" alt="Animation of whole slide mosaic fusion images" width="700" height="361">
 
 Finally, we have the final mosaic fusion result.
 
