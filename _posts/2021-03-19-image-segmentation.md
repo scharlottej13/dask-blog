@@ -154,7 +154,7 @@ viewer.add_image(absolute_threshold)
 viewer.add_image(images, contrast_limits=[0, 2000])
 ```
 
-![Absolute threshold napari screenshot](/images/2021-image-segmentation/napari-absolute-threshold.png)
+<img src="/images/2021-image-segmentation/napari-absolute-threshold.png" alt="Absolute threshold napari screenshot" width="700" height="476">
 
 But there's a problem here.
 
@@ -177,7 +177,7 @@ threshold_images = smoothed > thresh
 viewer.add_image(threshold_images)
 ```
 
-![Local threshold napari screenshot](/images/2021-image-segmentation/napari-local-threshold.png)
+<img src="/images/2021-image-segmentation/napari-local-threshold.png" alt="Local threshold napari screenshot" width="700" height="476">
 
 The results here look much better, this is a much cleaner separation of nuclei from the background and it looks good for all the image frames.
 
@@ -250,7 +250,7 @@ index = np.arange(num_features - 1) + 1  # [1, 2, 3, ...num_features]
 
 Here's a screenshot of the label image generated from our mask.
 
-![Label image napari screenshot](/images/2021-image-segmentation/napari-label-image.png)
+<img src="/images/2021-image-segmentation/napari-label-image.png" alt="Label image napari screenshot" width="700" height="476">
 
 ```python
 >>> print("Number of nuclei:", num_features.compute())
