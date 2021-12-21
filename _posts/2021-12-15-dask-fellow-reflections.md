@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Choosing good chunk sizes in Dask
+title: Reflections on one year as the Dask life science fellow
 author: Genevieve Buckley
 tags: [life science]
 theme: twitter
