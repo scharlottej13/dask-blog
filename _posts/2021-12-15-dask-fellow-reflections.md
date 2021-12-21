@@ -24,7 +24,7 @@ theme: twitter
 
 A previous progress update for February to September 2021 is [available here](https://blog.dask.org/2021/10/20/czi-eoss-update). Read on for a progress update for the period September to December 2021.
 
-To summarize, between September and December 2021 (inclusive):
+To summarize, between September and December 2021 inclusive, there were:
 - 32 merged pull requests acorss 7 repositories (`dask`, `distributed`, `dask-image`, `dask-tutorial`, `ITK`, `napari`, and `napari.github.io`)
 - 8 pending pull requests
 - 1 new `dask-image` release
@@ -93,9 +93,12 @@ Dask blogposts published between September through to December 2021 include:
 
 Reflecting back over the whole year, there were some things that worked well and some things that were less successful.
 
+
+### Highlights from this year
+
 My personal highlights include:
-- ITK + Dask integration work, discussed in more detail above.
-- A find objects fucntion for `dask-image`, also discussed in more detail above.
+- ITK + Dask integration work (discussed in more detail above).
+- A find objects fucntion for `dask-image` (discussed in more detail above).
 - Visualization work, because it's very high impact. We're solving issues raised by life science groups, but the improved tools benefit EVERYONE who uses Dask.
 - This bugfix from [dask PR #7391](https://github.com/dask/dask/pull/7391), because this single change fixed problems in four places at once (`scikit-image`, `dask-ml`, `xgcm/xhistogram`, and the cupy dask tests).
 - Community building, conferences, and engagement. Lots of effort went into events over this year, and it's certainly paid dividends.
@@ -123,15 +126,6 @@ Dask Down Under
 
 This has been very high impact work, and I'm pleased with what we've achieved. Improved tools for visualization were requested by users in our survey of the life science community. This was a high priority, because improvements to visuzliation tools benefit EVERYONE who uses Dask.
 
-I did some initial work in this area ([PR #7763](https://github.com/dask/dask/pull/7763), [PR #7716](https://github.com/dask/dask/pull/7716)). Freyam Mehta's [Google Summer of Code project](https://blog.dask.org/2021/08/23/gsoc-2021-project) was targeted to improve visualization tools, and he did a great job. Having Martin Durant as a second mentor worked very well.
-
-**Blogposts**
-
-Our original goal was to publish one blogpost every month on average, which has been exceeded. It was more time consuming than we'd originally planned to get co-written posts published, but persevering is well worth the effort (some examples [here](https://blog.dask.org/2021/12/01/mosaic-fusion) and [here](https://blog.dask.org/2021/03/29/apply-pretrained-pytorch-model)). More field specific examples is the second most common user request from the Dask survey, and worth doing more of.
-
-Blogposts that help address common areas of confusion are also especially high impact. [Choosing good chunk sizes in Dask](https://blog.dask.org/2021/11/02/choosing-dask-chunk-sizes) is a good example of that.
-
-A personal highlight was hearing from someone on the other side of the world who was using [my skeleton analysis code](https://blog.dask.org/2021/05/07/skeleton-analysis) for their research. It is very gratifying to hear stories like these!
 
 ### What didn't work so well
 
@@ -156,12 +150,14 @@ Slack works well to DM specific people to set up meeting times, etc, but the pub
 
 You can only get so much done as a solo developer. We had hoped that I would naturally end up working with teams from several different projects, but this didn't really end up being the case. The `napari` project is an exception to this, and that relationship was well established before starting work for Dask. Perhaps there's something more we could have done here to facilitate more interaction.
 
+## What's next for Genevieve?
+
+Genevieve will be starting a new job next year, you can find her on GitHub [@GeneviveeBuckley](https://github.com/GenevieveBuckley/).
+
 ## What's next in Dask?
 
 Lots of stuff has happened in Dask, but there is still lots left to do.
 Here is a summary of the next steps for several projects. We'd love it if new people would like to take up the torch and contribute to any of these projects.
-
-Genevieve will be starting a new job next year, you can find her on GitHub [@GeneviveeBuckley](https://github.com/GenevieveBuckley/).
 
 **ITK image compatibility with Dask**
 
