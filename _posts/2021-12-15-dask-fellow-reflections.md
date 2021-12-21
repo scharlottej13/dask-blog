@@ -24,6 +24,15 @@ theme: twitter
 
 A previous progress update for February to September 2021 is [available here](https://blog.dask.org/2021/10/20/czi-eoss-update). Read on for a progress update for the period September to December 2021.
 
+To summarize, between September and December 2021 (inclusive):
+- 32 merged pull requests acorss 7 repositories (`dask`, `distributed`, `dask-image`, `dask-tutorial`, `ITK`, `napari`, and `napari.github.io`)
+- 8 pending pull requests
+- 1 new `dask-image` release
+- 1 Dask tutorial run, and assisted with a second tutorial.
+- 4 new Dask blogposts published (five, if we count this one)
+
+Read on for a more detailed description of special projects within this time.
+
 **Dask stale issues sprint**
 
 In two weeks I was able to:
@@ -56,6 +65,10 @@ Feedback from the life science user survey indicates that improving Dask's perfo
 A major piece of work earlier this year was introducing high level graphs for array slicing and array overlap operations. That is a big effort requiring a lot of ongoing work.
 [PR #8467](https://github.com/dask/dask/pull/8467) tackles one of the next steps for this work.
 
+**Find objects function for dask-image**
+
+I implemented a `find_objects` function for `dask-image` in [PR #240](https://github.com/dask/dask-image/pull/240). This implementation does not need to know the maximum label number ahead of time, a subtantial improement over the previous attempt. This is a major step forward, because it removes a major blocker to introducing scikit-image like `regionprops` functionality.
+
 **Blogposts**
 
 Dask blogposts published between September through to December 2021 include:
@@ -79,6 +92,13 @@ Dask blogposts published between September through to December 2021 include:
 ## Personal reflections
 
 Reflecting back over the whole year, there were some things that worked well and some things that were less successful.
+
+My personal highlights include:
+- ITK + Dask integration work, discussed in more detail above.
+- A find objects fucntion for `dask-image`, also discussed in more detail above.
+- Visualization work, because it's very high impact. We're solving issues raised by life science groups, but the improved tools benefit EVERYONE who uses Dask.
+- This bugfix from [dask PR #7391](https://github.com/dask/dask/pull/7391), because this single change fixed problems in four places at once (`scikit-image`, `dask-ml`, `xgcm/xhistogram`, and the cupy dask tests).
+- Community building, conferences, and engagement. Lots of effort went into events over this year, and it's certainly paid dividends.
 
 ### What worked well
 
