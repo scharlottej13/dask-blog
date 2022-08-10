@@ -191,7 +191,7 @@ You should **not** describe `meta` using just a `dtype` (like: `meta="int64"`), 
 FutureWarning: Meta is not valid, `map_partitions` and `map_overlap` expects output to be a pandas object. Try passing a pandas object as meta or a dict or tuple representing the (name, dtype) of the columns. In the future the meta you passed will not work.
 ```
 
-During operations like `map_parittions` or `apply` (which uses `map_partitions` internally), Dask coerces the scalar output of each partition into a pandas object. So, the output of functions that take `meta` will never be scalar.
+During operations like `map_partitions` or `apply` (which uses `map_partitions` internally), Dask coerces the scalar output of each partition into a pandas object. So, the output of functions that take `meta` will never be scalar.
 
 For example:
 
