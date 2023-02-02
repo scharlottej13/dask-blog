@@ -2,7 +2,7 @@
 layout: post
 title: Easy CPU/GPU Arrays and Dataframes
 author: Rick Zamora (NVIDIA), Ben Zaitlen (NVIDIA)
-tags: []
+tags: [GPU]
 theme: twitter
 canonical_url: https://medium.com/rapids-ai/easy-cpu-gpu-arrays-and-dataframes-run-your-dask-code-where-youd-like-e349d92351d
 ---
