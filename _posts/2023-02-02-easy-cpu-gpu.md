@@ -58,6 +58,9 @@ dask.array<randint, shape=(10, 20), dtype=int64, chunksize=(2, 5), chunktype=cup
 
 Using `array.backend` is significantly easier and much more ergonomic -- it supports all basic array creation methods including: `ones`, `zeros`, `empty`, `full`, `arange`, and `random`
 
+_Note: `from_array`, `from_zarr`, `from_tiledb` have not yet been implemented
+with this functionality_
+
 ## Dispatching for Dataframe Creation
 
 When creating Dask Dataframes backed by either Pandas or cuDF, the beginning is often the input I/O methods: read_csv, read_parquet, etc. We'll first start by constructing a dataframe on the fly with `from_dict`:
