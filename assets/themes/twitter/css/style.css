@@ -97,3 +97,14 @@ table tr:hover td {
 	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
 }
+
+/* options for center-aligning figure and caption */
+figure.align-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.align-center {
+    text-align: center;
+}
