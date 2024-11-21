@@ -9,6 +9,8 @@ canonical_url: https://xarray.dev/blog/dask-detrending
 
 {% include JB/setup %}
 
+_This post was originally published on the [Xarray blog](https://xarray.dev/blog/dask-detrending)._
+
 Running large-scale GroupBy-Map patterns with Xarray that are backed by [Dask arrays](https://docs.dask.org/en/stable/array.html?utm_source=dask-blog) is
 an essential part of a lot of typical geospatial workloads. Detrending is a very common
 operation where this pattern is needed.
