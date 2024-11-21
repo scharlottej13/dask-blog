@@ -46,7 +46,7 @@ We are grouping by the day of the year and then are calculating the rolling aver
 Our example will run on a 1 TiB array, 64 years worth of data and the following structure:
 
 <figure class="align-center">
-<img alt="Python repr output of 1 TiB Dask array with shape (1801, 3600, 233376) split into 5460, 250 MiB chunks of (300, 300, 365)" src="/images/dask-detrending/input-array.png" style="width: 600px;"/>
+<img alt="Python repr output of 1 TiB Dask array with shape (1801, 3600, 233376) split into 5460, 250 MiB chunks of (300, 300, 365)" src="/images/dask-detrending/input-array.png" style="width: 800px;"/>
 </figure>
 
 The array isn't overly huge and the chunks are reasonably sized.
@@ -60,7 +60,7 @@ entries from many different areas in the array to create a single group (corresp
 Picking the same day of every year is basically a slicing operation with a step size of 365.
 
 <figure class="align-center">
-<img alt="Schematic showing an array sorted by time, where data is selected from many different areas in the array to create a single group (corresponding to a specific day of the year)." src="/images/dask-detrending/indexing-data-selection.png" title="Data Selection Pattern" style="width: 600px;"/>
+<img alt="Schematic showing an array sorted by time, where data is selected from many different areas in the array to create a single group (corresponding to a specific day of the year)." src="/images/dask-detrending/indexing-data-selection.png" title="Data Selection Pattern" style="width: 800px;"/>
 </figure>
 
 Our example has a year worth of data in a single chunk along the time axis. The general problem
@@ -74,7 +74,7 @@ entry, e.g. each group will consist of as many chunks as we have year.
 This results in a huge increase in the number of chunks:
 
 <figure class="align-center">
-<img alt="Python repr output of a 1 TiB Dask array with nearly 2 million, 700 kiB chunks." src="/images/dask-detrending/output-array-old.png" style="width: 600px;"/>
+<img alt="Python repr output of a 1 TiB Dask array with nearly 2 million, 700 kiB chunks." src="/images/dask-detrending/output-array-old.png" style="width: 800px;"/>
 </figure>
 
 This simple operation increases the number of chunks from 5000 to close to 2 million. Each
@@ -101,7 +101,7 @@ For our initial example, it will put every group into a single chunk. This means
 end up with the number of chunks along the time axis being equal to the number of groups, i.e. 365.
 
 <figure class="align-center">
-<img alt="Python repr output of a 1 TiB Dask array with 31164, 43 MiB chunks" src="/images/dask-detrending/output-array-new.png" style="width: 600px;"/>
+<img alt="Python repr output of a 1 TiB Dask array with 31164, 43 MiB chunks" src="/images/dask-detrending/output-array-new.png" style="width: 800px;"/>
 </figure>
 
 The algorithm reduces the number of chunks from 2 million to roughly 30 thousand, which is a huge improvement
